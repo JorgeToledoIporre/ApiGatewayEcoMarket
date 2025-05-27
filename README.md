@@ -101,10 +101,12 @@ java -jar target/api-gateway-0.0.1-SNAPSHOT.jar
 ---
 
 ## 🛣 Rutas Configuradas
-Ruta	Servicio Destino	Puerto	Descripción
-/api/v1/productos/**	Servicio de Productos	8081	Gestión de productos
-/api/v1/inventario/**	Servicio de Inventario	8081	Gestión de inventario
-/api/v1/usuarios/**	Servicio de Usuarios	8082	Gestión de usuarios
+
+| Ruta                   | Servicio Destino     | Puerto | Descripción         |
+|------------------------|---------------------|--------|---------------------|
+| /api/v1/productos/**   | Servicio de Productos| 8081   | Gestión de productos|
+| /api/v1/inventario/**  | Servicio de Inventario| 8081  | Gestión de inventario|
+| /api/v1/usuarios/**    | Servicio de Usuarios | 8082   | Gestión de usuarios |
 
 ---
 
