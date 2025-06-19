@@ -1,25 +1,67 @@
 server:
   port: 8080
 
-spring:  
+spring:
   application:
     name: api-gateway
+
   cloud:
     gateway:
       routes:
+        # Rutas microservicios
         - id: productos
           uri: http://localhost:8081
           predicates:
-            - Path=/api/v1/productos/**, /v1/api-docs/producto, /doc/swagger-ui.html
+            - Path=/api/v1/productos/**
+
         - id: inventario
           uri: http://localhost:8081
           predicates:
-            - Path=/api/v1/inventario/**, /v1/api-docs/producto, /doc/swagger-ui.html
+            - Path=/api/v1/inventario/**
+
         - id: usuarios
           uri: http://localhost:8082
           predicates:
-            - Path=/api/v1/usuarios/**, /v1/api-docs/producto, /doc/swagger-ui.html
+            - Path=/api/v1/usuarios/**
+
         - id: mensajes
           uri: http://localhost:8083
           predicates:
-            - Path=/api/v1/mensajes/**, /v1/api-docs/producto, /doc/swagger-ui.html
+            - Path=/api/v1/mensajes/**
+
+
+        # Rutas para Swagger UI y docs de productos/inventario (en 8081)
+        - id: swagger-productos-api-docs
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/productos/v3/api-docs/**
+
+        - id: swagger-productos-ui
+          uri: http://localhost:8081
+          predicates:
+            - Path=/api/v1/productos/swagger-ui.html
+
+
+        # Rutas para Swagger UI y docs usuarios (en 8082)
+        - id: swagger-usuarios-api-docs
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/usuarios/v3/api-docs/**
+
+        - id: swagger-usuarios-ui
+          uri: http://localhost:8082
+          predicates:
+            - Path=/api/v1/usuarios/swagger-ui.html
+
+
+        # Rutas para Swagger UI y docs mensajes (en 8083)
+        - id: swagger-mensajes-api-docs
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/mensajes/v3/api-docs/**
+
+        - id: swagger-mensajes-ui
+          uri: http://localhost:8083
+          predicates:
+            - Path=/api/v1/mensajes/swagger-ui.html
+
