@@ -12,22 +12,22 @@ spring:
         - id: productos
           uri: http://localhost:8081
           predicates:
-            - Path=/api/v1/productos/**
+            - Path=/api/v2/productos/**
 
         - id: inventario
           uri: http://localhost:8081
           predicates:
-            - Path=/api/v1/inventario/**
+            - Path=/api/v2/inventario/**
 
         - id: usuarios
           uri: http://localhost:8082
           predicates:
-            - Path=/api/v1/usuarios/**
+            - Path=/api/v2/usuarios/**
 
         - id: mensajes
           uri: http://localhost:8083
           predicates:
-            - Path=/api/v1/mensajes/**
+            - Path=/api/v2/mensajes/**
 
         # Swagger UI - Productos/Inventario (puerto 8081)
         - id: swagger-productos-ui
@@ -40,7 +40,7 @@ spring:
         - id: swagger-productos-docs
           uri: http://localhost:8081
           predicates:
-            - Path=/productos/v3/api-docs/**
+            - Path=/productos/v2/api-docs/**
           filters:
             - RewritePath=/productos/(?<segment>.*), /$\{segment}
 
@@ -55,7 +55,7 @@ spring:
         - id: swagger-usuarios-docs
           uri: http://localhost:8082
           predicates:
-            - Path=/usuarios/v3/api-docs/**
+            - Path=/usuarios/v2/api-docs/**
           filters:
             - RewritePath=/usuarios/(?<segment>.*), /$\{segment}
 
@@ -70,7 +70,7 @@ spring:
         - id: swagger-mensajes-docs
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/v3/api-docs/**
+            - Path=/mensajes/v2/api-docs/**
           filters:
             - RewritePath=/mensajes/(?<segment>.*), /$\{segment}
 
