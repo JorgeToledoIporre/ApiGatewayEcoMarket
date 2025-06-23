@@ -35,14 +35,14 @@ spring:
           predicates:
             - Path=/productos/swagger-ui/**
           filters:
-            - RewritePath=/productos/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+            - RewritePath=/productos/swagger-ui/, /swagger-ui/
 
         - id: swagger-productos-docs
           uri: http://localhost:8081
           predicates:
             - Path=/productos/v3/api-docs/**
           filters:
-            - RewritePath=/productos/(?<segment>.*), /${segment}
+            - RewritePath=/productos/, /
 
         # Swagger UI - Inventario (puerto 8081)
         - id: swagger-inventario-ui
@@ -50,14 +50,14 @@ spring:
           predicates:
             - Path=/inventario/swagger-ui/**
           filters:
-            - RewritePath=/inventario/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+            - RewritePath=/inventario/swagger-ui/, /swagger-ui/}
 
         - id: swagger-inventario-docs
           uri: http://localhost:8081
           predicates:
             - Path=/inventario/v3/api-docs/**
           filters:
-            - RewritePath=/inventario/(?<segment>.*), /${segment}
+            - RewritePath=/inventario/, /
 
         # Swagger UI - Usuarios (puerto 8082)
         - id: swagger-usuarios-ui
@@ -65,14 +65,14 @@ spring:
           predicates:
             - Path=/usuarios/swagger-ui/**
           filters:
-            - RewritePath=/usuarios/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+            - RewritePath=/usuarios/swagger-ui/, /swagger-ui/
 
         - id: swagger-usuarios-docs
           uri: http://localhost:8082
           predicates:
             - Path=/usuarios/v3/api-docs/**
           filters:
-            - RewritePath=/usuarios/(?<segment>.*), /${segment}
+            - RewritePath=/usuarios/, /
 
         # Swagger UI - Mensajes (puerto 8083)
         - id: swagger-mensajes-ui
@@ -80,14 +80,14 @@ spring:
           predicates:
             - Path=/mensajes/swagger-ui/**
           filters:
-            - RewritePath=/mensajes/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+            - RewritePath=/mensajes/swagger-ui/, /swagger-ui/
 
         - id: swagger-mensajes-docs
           uri: http://localhost:8083
           predicates:
             - Path=/mensajes/v3/api-docs/**
           filters:
-            - RewritePath=/mensajes/(?<segment>.*), /${segment}
+            - RewritePath=/mensajes/, /
 
         # Rutas para acceder directamente al Swagger UI html
         - id: swagger-productos-html
