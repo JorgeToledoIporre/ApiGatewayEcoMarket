@@ -125,3 +125,24 @@ spring:
             - Path=/mensajes/swagger-ui.html
           filters:
             - RewritePath=/mensajes/swagger-ui.html, /swagger-ui.html
+            
+
+
+
+
+        # Ruta específica para el endpoint principal de docs
+        - id: swagger-mensajes-docs-main
+          uri: http://localhost:8083
+          predicates:
+            - Path=/mensajes/v3/api-docs
+          filters:
+            - RewritePath=/mensajes/v3/api-docs, /v3/api-docs            
+
+
+        # Swagger UI HTML directo
+        - id: swagger-mensajes-html
+          uri: http://localhost:8083
+          predicates:
+            - Path=/mensajes/swagger-ui.html
+          filters:
+            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui.html
