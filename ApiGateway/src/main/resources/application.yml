@@ -1,7 +1,6 @@
 spring:
   cloud:
     gateway:
-      # Configuración global de CORS
       globalcors:
         cors-configurations:
           '[/**]':
@@ -16,7 +15,7 @@ spring:
             allowCredentials: false
       
       routes:
-        # Rutas microservicios
+        # ========== RUTAS DE MICROSERVICIOS ==========
         - id: productos
           uri: http://localhost:8081
           predicates:
@@ -37,112 +36,94 @@ spring:
           predicates:
             - Path=/api/v2/mensajes/**
 
-        # Swagger UI - Productos
-        - id: swagger-productos-ui
-          uri: http://localhost:8081
-          predicates:
-            - Path=/productos/swagger-ui/** 
-          filters:
-            - RewritePath=/productos/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
-
-        - id: swagger-productos-docs
-          uri: http://localhost:8081
-          predicates:
-            - Path=/productos/v3/api-docs/** 
-          filters:
-            - RewritePath=/productos/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
-
-        # Swagger UI - Inventario
-        - id: swagger-inventario-ui
-          uri: http://localhost:8081
-          predicates:
-            - Path=/inventario/swagger-ui/** 
-          filters:
-            - RewritePath=/inventario/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
-
-        - id: swagger-inventario-docs
-          uri: http://localhost:8081
-          predicates:
-            - Path=/inventario/v3/api-docs/** 
-          filters:
-            - RewritePath=/inventario/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
-
-        # Swagger UI - Usuarios
-        - id: swagger-usuarios-ui
-          uri: http://localhost:8082
-          predicates:
-            - Path=/usuarios/swagger-ui/** 
-          filters:
-            - RewritePath=/usuarios/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
-
-        - id: swagger-usuarios-docs
-          uri: http://localhost:8082
-          predicates:
-            - Path=/usuarios/v3/api-docs/** 
-          filters:
-            - RewritePath=/usuarios/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
-
-        # Swagger UI - Mensajes
-        - id: swagger-mensajes-ui
+        # ========== SWAGGER MENSAJES ==========
+        # Ruta principal de Swagger UI (sin index.html)
+        - id: swagger-mensajes-ui-main
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/swagger-ui/** 
+            - Path=/mensajes/swagger-ui.html
+          filters:
+            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui.html
+
+        # Rutas para recursos de Swagger UI
+        - id: swagger-mensajes-ui-resources
+          uri: http://localhost:8083
+          predicates:
+            - Path=/mensajes/swagger-ui/**
           filters:
             - RewritePath=/mensajes/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
 
-        - id: swagger-mensajes-docs
+        # API Docs principal
+        - id: swagger-mensajes-docs-main
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/v3/api-docs/** 
+            - Path=/mensajes/v3/api-docs
+          filters:
+            - RewritePath=/mensajes/v3/api-docs, /v3/api-docs
+
+        # API Docs con parámetros
+        - id: swagger-mensajes-docs-sub
+          uri: http://localhost:8083
+          predicates:
+            - Path=/mensajes/v3/api-docs/**
           filters:
             - RewritePath=/mensajes/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
 
-        # Rutas directas para Swagger UI HTML
-        - id: swagger-productos-html
+        # ========== SWAGGER OTROS MICROSERVICIOS ==========
+        # Productos
+        - id: swagger-productos-ui-main
           uri: http://localhost:8081
           predicates:
             - Path=/productos/swagger-ui.html
           filters:
             - RewritePath=/productos/swagger-ui.html, /swagger-ui.html
 
-        - id: swagger-inventario-html
+        - id: swagger-productos-ui-resources
           uri: http://localhost:8081
           predicates:
-            - Path=/inventario/swagger-ui.html
+            - Path=/productos/swagger-ui/**
           filters:
-            - RewritePath=/inventario/swagger-ui.html, /swagger-ui.html
+            - RewritePath=/productos/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
 
-        - id: swagger-usuarios-html
+        - id: swagger-productos-docs-main
+          uri: http://localhost:8081
+          predicates:
+            - Path=/productos/v3/api-docs
+          filters:
+            - RewritePath=/productos/v3/api-docs, /v3/api-docs
+
+        - id: swagger-productos-docs-sub
+          uri: http://localhost:8081
+          predicates:
+            - Path=/productos/v3/api-docs/**
+          filters:
+            - RewritePath=/productos/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+
+        # Usuarios
+        - id: swagger-usuarios-ui-main
           uri: http://localhost:8082
           predicates:
             - Path=/usuarios/swagger-ui.html
           filters:
             - RewritePath=/usuarios/swagger-ui.html, /swagger-ui.html
 
-        - id: swagger-mensajes-html
-          uri: http://localhost:8083
+        - id: swagger-usuarios-ui-resources
+          uri: http://localhost:8082
           predicates:
-            - Path=/mensajes/swagger-ui.html
+            - Path=/usuarios/swagger-ui/**
           filters:
-            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui.html
-            
+            - RewritePath=/usuarios/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
 
-
-
-
-        # Ruta específica para el endpoint principal de docs
-        - id: swagger-mensajes-docs-main
-          uri: http://localhost:8083
+        - id: swagger-usuarios-docs-main
+          uri: http://localhost:8082
           predicates:
-            - Path=/mensajes/v3/api-docs
+            - Path=/usuarios/v3/api-docs
           filters:
-            - RewritePath=/mensajes/v3/api-docs, /v3/api-docs            
+            - RewritePath=/usuarios/v3/api-docs, /v3/api-docs
 
-
-        # Swagger UI HTML directo
-        - id: swagger-mensajes-html
-          uri: http://localhost:8083
+        - id: swagger-usuarios-docs-sub
+          uri: http://localhost:8082
           predicates:
-            - Path=/mensajes/swagger-ui.html
+            - Path=/usuarios/v3/api-docs/**
           filters:
-            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui.html
+            - RewritePath=/usuarios/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
