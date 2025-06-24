@@ -13,28 +13,51 @@ spring:
               - OPTIONS
             allowedHeaders: "*"
             allowCredentials: false
-      
+      # Configuración global para agregar headers de proxy
+      default-filters:
+        - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+        - AddRequestHeader=X-Forwarded-Proto, http
+        - AddRequestHeader=X-Forwarded-Port, 8080
+        - AddRequestHeader=X-Forwarded-Prefix, /api/v2
+
       routes:
         # ========== RUTAS DE MICROSERVICIOS ==========
+        
         - id: productos
           uri: http://localhost:8081
           predicates:
             - Path=/api/v2/productos/**
+          filters:
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+            - AddRequestHeader=X-Forwarded-Proto, http
+            - AddRequestHeader=X-Original-Request-Url, http://34.196.63.137:8080
 
         - id: inventario
           uri: http://localhost:8081
           predicates:
             - Path=/api/v2/inventario/**
+          filters:
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+            - AddRequestHeader=X-Forwarded-Proto, http
+            - AddRequestHeader=X-Original-Request-Url, http://34.196.63.137:8080
 
         - id: usuarios
           uri: http://localhost:8082
           predicates:
             - Path=/api/v2/usuarios/**
+          filters:
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+            - AddRequestHeader=X-Forwarded-Proto, http
+            - AddRequestHeader=X-Original-Request-Url, http://34.196.63.137:8080
 
         - id: mensajes
           uri: http://localhost:8083
           predicates:
             - Path=/api/v2/mensajes/**
+          filters:
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+            - AddRequestHeader=X-Forwarded-Proto, http
+            - AddRequestHeader=X-Original-Request-Url, http://34.196.63.137:8080
 
         # ========== SWAGGER MENSAJES ==========
         # 1. API Docs - Endpoint principal (MUY IMPORTANTE - debe ir primero)
@@ -46,7 +69,8 @@ spring:
           filters:
             - RewritePath=/mensajes/v3/api-docs, /v3/api-docs
             - AddResponseHeader=Access-Control-Allow-Origin, *
-
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+            
         # 2. API Docs - Sub-rutas (swagger-config, etc.)
         - id: swagger-mensajes-docs-sub
           uri: http://localhost:8083
@@ -55,6 +79,7 @@ spring:
           filters:
             - RewritePath=/mensajes/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
             - AddResponseHeader=Access-Control-Allow-Origin, *
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
 
         # 3. Swagger UI - Página principal
         - id: swagger-mensajes-ui-index
@@ -63,7 +88,8 @@ spring:
             - Path=/mensajes/swagger-ui/index.html
           filters:
             - RewritePath=/mensajes/swagger-ui/index.html, /swagger-ui/index.html
-
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
+            
         # 4. Swagger UI - Todos los recursos (CSS, JS, etc.)
         - id: swagger-mensajes-ui-resources
           uri: http://localhost:8083
@@ -71,6 +97,7 @@ spring:
             - Path=/mensajes/swagger-ui/**
           filters:
             - RewritePath=/mensajes/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+            - AddRequestHeader=X-Forwarded-Host, 34.196.63.137:8080
 
         # 5. Redirección desde swagger-ui.html
         - id: swagger-mensajes-ui-redirect
