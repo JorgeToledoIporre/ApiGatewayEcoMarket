@@ -37,21 +37,29 @@ spring:
             - Path=/api/v2/mensajes/**
 
         # ========== SWAGGER MENSAJES ==========
-        # Ruta principal de Swagger UI (sin index.html)
-        - id: swagger-mensajes-ui-main
-          uri: http://localhost:8083
-          predicates:
-            - Path=/mensajes/swagger-ui.html
-          filters:
-            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui.html
-
-        # Rutas para recursos de Swagger UI
+        # Ruta para Swagger UI recursos (DEBE ir ANTES que swagger-ui.html)
         - id: swagger-mensajes-ui-resources
           uri: http://localhost:8083
           predicates:
             - Path=/mensajes/swagger-ui/**
           filters:
             - RewritePath=/mensajes/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+
+        # Ruta principal de Swagger UI (redirección directa al index)
+        - id: swagger-mensajes-ui-main
+          uri: http://localhost:8083
+          predicates:
+            - Path=/mensajes/swagger-ui.html
+          filters:
+            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui/index.html
+
+        # Ruta alternativa para acceso directo al index
+        - id: swagger-mensajes-ui-index
+          uri: http://localhost:8083
+          predicates:
+            - Path=/mensajes/swagger-ui/index.html
+          filters:
+            - RewritePath=/mensajes/swagger-ui/index.html, /swagger-ui/index.html
 
         # API Docs principal
         - id: swagger-mensajes-docs-main
