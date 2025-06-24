@@ -1,6 +1,20 @@
 spring:
   cloud:
     gateway:
+      # Configuración global de CORS
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods:
+              - GET
+              - POST
+              - PUT
+              - DELETE
+              - OPTIONS
+            allowedHeaders: "*"
+            allowCredentials: false
+      
       routes:
         # Rutas microservicios
         - id: productos
@@ -90,6 +104,13 @@ spring:
             - Path=/productos/swagger-ui.html
           filters:
             - RewritePath=/productos/swagger-ui.html, /swagger-ui.html
+
+        - id: swagger-inventario-html
+          uri: http://localhost:8081
+          predicates:
+            - Path=/inventario/swagger-ui.html
+          filters:
+            - RewritePath=/inventario/swagger-ui.html, /swagger-ui.html
 
         - id: swagger-usuarios-html
           uri: http://localhost:8082
