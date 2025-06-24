@@ -37,23 +37,26 @@ spring:
             - Path=/api/v2/mensajes/**
 
         # ========== SWAGGER MENSAJES ==========
-        # Ruta para Swagger UI recursos (DEBE ir ANTES que swagger-ui.html)
-        - id: swagger-mensajes-ui-resources
+        # 1. API Docs - Endpoint principal (MUY IMPORTANTE - debe ir primero)
+        - id: swagger-mensajes-docs-root
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/swagger-ui/**
+            - Path=/mensajes/v3/api-docs
+            - Method=GET
           filters:
-            - RewritePath=/mensajes/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
+            - RewritePath=/mensajes/v3/api-docs, /v3/api-docs
+            - AddResponseHeader=Access-Control-Allow-Origin, *
 
-        # Ruta principal de Swagger UI (redirección directa al index)
-        - id: swagger-mensajes-ui-main
+        # 2. API Docs - Sub-rutas (swagger-config, etc.)
+        - id: swagger-mensajes-docs-sub
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/swagger-ui.html
+            - Path=/mensajes/v3/api-docs/**
           filters:
-            - RewritePath=/mensajes/swagger-ui.html, /swagger-ui/index.html
+            - RewritePath=/mensajes/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - AddResponseHeader=Access-Control-Allow-Origin, *
 
-        # Ruta alternativa para acceso directo al index
+        # 3. Swagger UI - Página principal
         - id: swagger-mensajes-ui-index
           uri: http://localhost:8083
           predicates:
@@ -61,21 +64,21 @@ spring:
           filters:
             - RewritePath=/mensajes/swagger-ui/index.html, /swagger-ui/index.html
 
-        # API Docs principal
-        - id: swagger-mensajes-docs-main
+        # 4. Swagger UI - Todos los recursos (CSS, JS, etc.)
+        - id: swagger-mensajes-ui-resources
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/v3/api-docs
+            - Path=/mensajes/swagger-ui/**
           filters:
-            - RewritePath=/mensajes/v3/api-docs, /v3/api-docs
+            - RewritePath=/mensajes/swagger-ui/(?<segment>.*), /swagger-ui/${segment}
 
-        # API Docs con parámetros
-        - id: swagger-mensajes-docs-sub
+        # 5. Redirección desde swagger-ui.html
+        - id: swagger-mensajes-ui-redirect
           uri: http://localhost:8083
           predicates:
-            - Path=/mensajes/v3/api-docs/**
+            - Path=/mensajes/swagger-ui.html
           filters:
-            - RewritePath=/mensajes/v3/api-docs/(?<segment>.*), /v3/api-docs/${segment}
+            - RedirectTo=302, http://34.196.63.137:8080/mensajes/swagger-ui/index.html
 
         # ========== SWAGGER OTROS MICROSERVICIOS ==========
         # Productos
